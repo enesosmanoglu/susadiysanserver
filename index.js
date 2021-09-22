@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
     );
     next();
 });
-app.use(express.static("./"));
+app.use(express.static("./public/"));
 
 //# use alternate localhost and the port Heroku assigns to $PORT
 const host = '0.0.0.0';
