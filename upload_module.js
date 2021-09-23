@@ -122,9 +122,22 @@ async function upload(credentials, videos, puppeteerLaunch) {
     try {
         await login(page, credentials);
     } catch (error) {
-        console.error(error);
-        console.log("Login failed trying again to login");
-        await login(page, credentials);
+        if (error.message === 'Recapcha found') {
+            if (browser) {
+                await browser.close();
+            }
+            throw error;
+        }
+
+        // Login failed trying again to login
+        try {
+            await login(page, credentials);
+        } catch (error) {
+            if (browser) {
+                await browser.close();
+            }
+            throw error;
+        }
     }
     await changeHomePageLangIfNeeded(page);
     for (const video of videos) {
@@ -292,25 +305,37 @@ async function login(localPage, credentials) {
     const emailInputSelector = 'input[type="email"]';
     await localPage.waitForSelector(emailInputSelector);
 
-    await localPage.type(emailInputSelector, credentials.email);
+    await localPage.type(emailInputSelector, credentials.email, { delay: 50 });
     await localPage.keyboard.press('Enter');
-    await localPage.waitForNavigation({
-        waitUntil: 'networkidle0'
-    });
 
     const passwordInputSelector = 'input[type="password"]:not([aria-hidden="true"])';
     await localPage.waitForSelector(passwordInputSelector);
-    await localPage.type(passwordInputSelector, credentials.pass);
+    await localPage.waitForTimeout(3000)
+    await localPage.type(passwordInputSelector, credentials.pass, { delay: 50 })
 
     await localPage.keyboard.press('Enter');
 
-    await localPage.waitForNavigation();
+    try {
+        await localPage.waitForNavigation();
+    } catch (error) {
+        const recaptchaInputSelector = 'input[aria-label="Type the text you hear or see"]';
+
+        const isOnRecaptchaPage = await localPage.evaluate(
+            recaptchaInputSelector => document.querySelector(recaptchaInputSelector) !== null,
+            recaptchaInputSelector
+        );
+
+        if (isOnRecaptchaPage) {
+            throw new Error('Recaptcha found')
+        }
+
+        throw new Error(error);
+    }
 
     try {
         const uploadPopupSelector = 'ytcp-uploads-dialog';
         await localPage.waitForSelector(uploadPopupSelector, { timeout: 60000 });
     } catch (error) {
-        console.error(error);
         await securityBypass(localPage, credentials.recoveryemail);
     }
 }
@@ -327,17 +352,21 @@ async function securityBypass(localPage, recoveryemail) {
         console.error(error);
     }
 
-
+    await localPage.waitForNavigation({
+        waitUntil: 'networkidle0'
+    });
     const enterRecoveryXPath = '//*[normalize-space(text())=\'Enter recovery email address\']';
     await localPage.waitForXPath(enterRecoveryXPath);
+    await localPage.waitForTimeout(5000);
     await localPage.focus('input[type="email"]');
-    await localPage.type('input[type="email"]', recoveryemail);
+    await localPage.waitForTimeout(3000);
+    await localPage.type('input[type="email"]', recoveryemail, { delay: 100 });
     await localPage.keyboard.press('Enter');
     await localPage.waitForNavigation({
         waitUntil: 'networkidle0'
     });
-    const selectBtnXPath = '//*[normalize-space(text())=\'Select files\']';
-    await localPage.waitForXPath(selectBtnXPath);
+    const uploadPopupSelector = 'ytcp-uploads-dialog'
+    await localPage.waitForSelector(uploadPopupSelector, { timeout: 60000 })
 }
 
 async function uploadVideo(videoJSON) {
