@@ -300,7 +300,11 @@ async function login(localPage, credentials) {
     } catch (error) {
 
     }
-    await changeLoginPageLangIfNeeded(localPage);
+    /* try {
+        await changeLoginPageLangIfNeeded(localPage);
+    } catch (error) {
+        console.log("Change Lang in Login Page Error:", error);
+    } */
 
     const emailInputSelector = 'input[type="email"]';
     await localPage.waitForSelector(emailInputSelector);

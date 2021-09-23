@@ -35,6 +35,7 @@ app.get('/:streamerName/:videoName/:videoUrl/:startTime/:duration', function (re
     if (!fs.existsSync(path.join('.', 'videos', streamerName)))
         fs.mkdirSync(path.join('.', 'videos', streamerName));
 
+    return upload(streamerName, sanitize(videoName), "", "", "", false, "");
     let video = ffmpeg()
         .input(videoUrl)
         .setStartTime(startTime)

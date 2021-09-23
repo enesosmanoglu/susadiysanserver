@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { upload } = require('./upload_module.js');
+const { upload } = require('youtube-videos-uploader')//require('./upload_module.js');
 const sanitize = require("sanitize-filename");
 const fs = require('fs');
 const fetch = require('node-fetch');
@@ -11,15 +11,6 @@ var downloadAsync = function (url, filename) {
         fs.writeFile(filename, buffer, resolve);
     })
 };
-
-//     \ / : * ? " < > |
-let streamerName = process.argv.slice(2)[0];
-let videoName = process.argv.slice(2)[1];
-let watchUrl = process.argv.slice(2)[2];
-let keywords = process.argv.slice(2)[3];
-let hashtags = process.argv.slice(2)[4];
-let shareAfterHD = process.argv.slice(2)[5] == 'true';
-let thumbnailPath = process.argv.slice(2)[6];
 
 module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAfterHD, thumbnailPath) => {
     let filePath = sanitize(`${videoName}`) + ".mp4";
