@@ -103,10 +103,10 @@ module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAf
         //description += fs.existsSync("./descriptions/" + streamerName + ".txt") ? fs.readFileSync("./descriptions/" + streamerName + ".txt", "utf8") : "";
 
         description += `
-    ┌──╢ Susadıysan Twitch ╟──●
-    ├─› En Hızlı ve En Kaliteli Yayın Kesitleri
-    ├─› Kaldırılmasını istediğiniz videolar için lütfen mail üzerinden ulaşınız.
-    └─› susadiysandwitch@gmail.com
+┌──╢ Susadıysan Twitch ╟──●
+├─› En Hızlı ve En Kaliteli Yayın Kesitleri
+├─› Kaldırılmasını istediğiniz videolar için lütfen mail üzerinden ulaşınız.
+└─› susadiysandwitch@gmail.com
     `;
 
         let playlist = "Susadıysan " + streamerName;
