@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { upload } = require('youtube-videos-uploader')//require('./upload_module.js');
+const { upload } = require('./youtube-videos-uploader')//require('./upload_module.js');
 const sanitize = require("sanitize-filename");
 const fs = require('fs');
 const fetch = require('node-fetch');
