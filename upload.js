@@ -127,7 +127,7 @@ module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAf
                 tags: keywords.split(',').map(k => k.trim()).filter(k => k),
                 thumbnail: thumbnailPath,
             }
-        ], { headless: true, userDataDir: "./UserData" }).then(console.log)
+        ], { args: ['--no-sandbox'], headless: true, userDataDir: "./UserData" }).then(console.log)
     })();
 }
 
