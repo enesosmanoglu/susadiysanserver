@@ -1,6 +1,6 @@
 {
   "name": "susadiysanserver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,12 +10,16 @@
   "author": "Osmanson",
   "license": "MIT",
   "dependencies": {
-    "node-fetch": "^2.6.1",
-    "express": "^4.17.1",
+    "busboy": "^0.3.1",
     "cors": "^2.8.5",
-    "sanitize-filename": "^1.6.3",
-    "ws": "^8.2.2",
-    "busboy": "^0.3.1"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^10.2.0",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-stealth": "^2.7.8",
+    "sanitize-filename": "^1.6.3"
   },
   "engines": {
     "node": "16.x"
