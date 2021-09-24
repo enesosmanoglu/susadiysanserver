@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { upload } = require('./youtube-videos-uploader')//require('./upload_module.js');
+const { upload } = require('./youtube-videos-uploader');
 const sanitize = require("sanitize-filename");
 const fs = require('fs');
 const fetch = require('node-fetch');
@@ -118,7 +118,7 @@ module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAf
                 tags: keywords.split(',').map(k => k.trim()).filter(k => k),
                 thumbnail: thumbnailPath,
             }
-        ], { args: ['--no-sandbox'], headless: true, userDataDir: "./UserData" }).then(console.log)
+        ], { args: ['--no-sandbox'], headless: true }).then(console.log) //userDataDir: "./UserData"
     })();
 }
 

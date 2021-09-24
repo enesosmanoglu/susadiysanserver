@@ -45,7 +45,7 @@ const width = 900
 
 let browser, page
 
-const uploadURL = fs.existsSync('upload.url') ? fs.readFileSync('upload.url', "utf8") : 'https://www.youtube.com/upload'
+const uploadURL = process.env.uploadurl || 'https://www.youtube.com/upload'
 const homePageURL = 'https://www.youtube.com'
 
 const downloadAsync = function (url, filename) {
