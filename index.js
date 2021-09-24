@@ -8,7 +8,7 @@ const twitch = require("twitch-m3u8");
 
 const app = express();
 //# use alternate localhost and the port Heroku assigns to $PORT
-const _host = 'localhost';
+const _host = '0.0.0.0';
 const _port = process.env.PORT || 3000;
 let host, port;
 
@@ -262,7 +262,7 @@ let server = app.listen(_port, _host, function () {
     host = server.address().address;
     port = server.address().port;
 
-    console.log("Example app listening at http://%s:%s", host, port);
+    console.log("App listening | https://%s:%s | https://%s:%s", host, port, host, port);
 });
 
 function mkdirPath(p) {
