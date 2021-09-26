@@ -157,7 +157,7 @@ app.get('/', async function (req, res) {
 
     createVideo(video)
         .then(videoPath => {
-            res.redirect(`${encodeURIComponent(video.streamer)}/${encodeURIComponent(sanitize(video.name))}`)
+            res.redirect(`${encodeURIComponent(video.streamer)}/${encodeURIComponent(sanitize(video.name))}`);
             res.end();
         })
         .catch(err => {
@@ -191,7 +191,39 @@ app.get('/:streamerName/:videoName', function (req, res) {
     console.log(streamerName, '|', videoName);
 
     if (fs.existsSync(videoPath)) {
-        res.send(`<video controls style="position:absolute;left:0px;top:0px;width:-webkit-fill-available;height:-webkit-fill-available;background:#000" src="${filePath}"></video>`);
+        res.send(`<title>${videoName} | ${streamerName}</title><video controls style="position:absolute;left:0px;top:0px;width:-webkit-fill-available;height:-webkit-fill-available;background:#000" src="${filePath}"></video>`);
+    } else {
+        res.sendStatus(404);
+    }
+});
+app.get('/:streamerName/:videoName.mp4/upload', function (req, res) {
+    let { streamerName, videoName } = req.params;
+    streamerName = decodeURIComponent(streamerName);
+    videoName = decodeURIComponent(videoName);
+
+    let filePath = sanitize(`${videoName}`) + ".mp4";
+    let videoPath = "./videos/" + streamerName + "/" + filePath;
+    console.log(streamerName, '|', videoName);
+
+    if (fs.existsSync(videoPath)) {
+        upload(streamerName, sanitize(videoName), "", "", "", false, "");
+        res.send("OK");
+    } else {
+        res.sendStatus(404);
+    }
+});
+app.get('/:streamerName/:videoName/upload', function (req, res) {
+    let { streamerName, videoName } = req.params;
+    streamerName = decodeURIComponent(streamerName);
+    videoName = decodeURIComponent(videoName);
+
+    let filePath = sanitize(`${videoName}`) + ".mp4";
+    let videoPath = "./videos/" + streamerName + "/" + filePath;
+    console.log(streamerName, '|', videoName);
+
+    if (fs.existsSync(videoPath)) {
+        upload(streamerName, sanitize(videoName), "", "", "", false, "");
+        res.send("OK");
     } else {
         res.sendStatus(404);
     }
@@ -255,14 +287,14 @@ function createVideo(data = Object.assign({}, videoPrototype)) {
     });
 }
 function uploadVideo(video = Object.assign({}, videoPrototype)) {
-    //upload(video.streamer, sanitize(video.name), "", "", "", false, "");
+    upload(video.streamer, sanitize(video.name), "", "", "", false, "");
 }
 
 let server = app.listen(_port, _host, function () {
     host = server.address().address;
     port = server.address().port;
 
-    console.log("App listening | https://%s:%s | https://%s:%s", host, port, host, port);
+    console.log("App listening | http://%s:%s | https://%s:%s", host, port, host, port);
 });
 
 function mkdirPath(p) {
