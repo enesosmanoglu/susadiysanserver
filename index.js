@@ -50,6 +50,12 @@ let videoPrototype = {
     startTime: "",
     duration: "",
     path: "",
+    shareToYouTube: false,
+    shareAfterHD: true,
+    keywords: "",
+    hashtags: "",
+    referenceUrl: "",
+    thumbnailUrl: "",
 }
 
 let vods = { vodId: Object.assign({}, vodPrototype) }
@@ -125,7 +131,6 @@ app.post('/', async function (req, res) {
         })
 });
 app.get('/', async function (req, res) {
-    console.log(req.query);
     let vod = Object.assign({}, vodPrototype);
     let video = Object.assign({}, videoPrototype);
     Object.assign(video, req.query);
@@ -157,6 +162,9 @@ app.get('/', async function (req, res) {
 
     createVideo(video)
         .then(videoPath => {
+            if (video.shareToYouTube) {
+                uploadVideo(video);
+            }
             res.redirect(`${encodeURIComponent(video.streamer)}/${encodeURIComponent(sanitize(video.name))}`);
             res.end();
         })
@@ -287,7 +295,7 @@ function createVideo(data = Object.assign({}, videoPrototype)) {
     });
 }
 function uploadVideo(video = Object.assign({}, videoPrototype)) {
-    upload(video.streamer, sanitize(video.name), "", "", "", false, "");
+    upload(video.streamer, sanitize(video.name), video.referenceUrl, video.keywords, video.hashtags, video.shareAfterHD, video.thumbnailUrl);
 }
 
 let server = app.listen(_port, _host, function () {
