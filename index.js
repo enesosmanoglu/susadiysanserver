@@ -51,7 +51,7 @@ let videoPrototype = {
     duration: "",
     path: "",
     shareToYouTube: false,
-    shareAfterHD: true,
+    shareAfterHD: false,
     keywords: "",
     hashtags: "",
     referenceUrl: "",
@@ -80,7 +80,7 @@ app.get('/:streamer/:name/:vodId/:startTime/:duration', async function (req, res
 
     console.log("VOD found! Selected:", vod[0].quality)
     video.url = vod[0].url;
-    video.path = path.join('.', 'videos', video.streamer, sanitize(encodeURIComponent(video.name)) + ".mp4");
+    video.path = path.join('.', 'videos', encodeURIComponent(video.streamer), sanitize(encodeURIComponent(video.name)) + ".mp4");
     console.log(video);
 
     createVideo(video)
@@ -117,7 +117,7 @@ app.post('/', async function (req, res) {
 
     console.log("VOD found! Selected:", vod[0].quality)
     video.url = vod[0].url;
-    video.path = path.join('.', 'videos', video.streamer, sanitize(encodeURIComponent(video.name)) + ".mp4");
+    video.path = path.join('.', 'videos', encodeURIComponent(video.streamer), sanitize(encodeURIComponent(video.name)) + ".mp4");
     console.log(video);
 
     createVideo(video)
@@ -157,7 +157,7 @@ app.get('/', async function (req, res) {
 
     console.log("VOD found! Selected:", vod[0].quality)
     video.url = vod[0].url;
-    video.path = path.join('.', 'videos', video.streamer, sanitize(encodeURIComponent(video.name)) + ".mp4");
+    video.path = path.join('.', 'videos', encodeURIComponent(video.streamer), sanitize(encodeURIComponent(video.name)) + ".mp4");
     console.log(video);
 
     createVideo(video)
@@ -295,7 +295,7 @@ function createVideo(data = Object.assign({}, videoPrototype)) {
     });
 }
 function uploadVideo(video = Object.assign({}, videoPrototype)) {
-    upload(video.streamer, sanitize(encodeURIComponent(video.name)), video.referenceUrl, video.keywords, video.hashtags, video.shareAfterHD, video.thumbnailUrl);
+    upload(encodeURIComponent(video.streamer), sanitize(encodeURIComponent(video.name)), video.referenceUrl, video.keywords, video.hashtags, video.shareAfterHD, video.thumbnailUrl);
 }
 
 let server = app.listen(_port, _host, function () {

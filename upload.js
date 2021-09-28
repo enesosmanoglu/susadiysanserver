@@ -40,8 +40,8 @@ module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAf
 
         let description = watchUrl ? `┌──╢ İzlenen Video ╟──●\n└─› ${watchUrl}\n\n` : "";
 
-        if (fs.existsSync("./descriptions/" + streamerName + ".txt")) {
-            let lines = fs.readFileSync("./descriptions/" + streamerName + ".txt", "utf8").replace(/\r/g, '').split("\n");
+        if (fs.existsSync("./descriptions/" + decodeURIComponent(streamerName) + ".txt")) {
+            let lines = fs.readFileSync("./descriptions/" + decodeURIComponent(streamerName) + ".txt", "utf8").replace(/\r/g, '').split("\n");
 
             let streamerSocialMedia = [];
             if (lines.length > 1) {
@@ -100,9 +100,9 @@ module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAf
 └─› susadiysandwitch@gmail.com
     `;
 
-        let playlist = "Susadıysan " + streamerName;
+        let playlist = "Susadıysan " + decodeURIComponent(streamerName);
 
-        console.log(streamerName);
+        console.log(decodeURIComponent(streamerName));
 
         // Returns uploaded video links in array 
         let { email, pass, recoveryemail } = process.env;
