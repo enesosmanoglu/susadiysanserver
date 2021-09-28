@@ -109,7 +109,7 @@ module.exports = (streamerName, videoName, watchUrl, keywords, hashtags, shareAf
         upload({ email, pass, recoveryemail }, [
             {
                 path: videoPath,
-                title: `${videoName}`,
+                title: `${decodeURIComponent(videoName)}`,
                 description,
                 privacy: "Draft",
                 playlist,
