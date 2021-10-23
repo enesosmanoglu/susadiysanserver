@@ -263,6 +263,7 @@ async function launchBrowser(puppeteerLaunch) {
     page = await browser.newPage()
     await page.setDefaultTimeout(timeout)
     await page.setViewport({ width: width, height: height })
+    await page.setBypassCSP(true)
 }
 
 async function login(localPage, credentials) {
@@ -367,7 +368,7 @@ async function uploadVideo(videoJSON) {
 
     const { title, description, tags, privacy, addCartPlaylist, shareAfterHD } = videoJSON;
     // For backward compatablility playlist.name is checked first
-    const playlistName = videoJSON.playlist?.name || videoJSON.playlist
+    const playlistName = videoJSON.playlist && videoJSON.playlist.name || videoJSON.playlist
     const videoLang = videoJSON.language
     let thumb = videoJSON.thumbnail
     await page.evaluate(() => { window.onbeforeunload = null })
